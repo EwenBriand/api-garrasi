@@ -1,0 +1,16 @@
+beautifulsoup4==4.11.1
+Flask==2.2.2
+Flask_Cors==3.0.10
+httpx==0.23.0
+httpx_socks==0.7.4
+motor==3.0.0
+numpy_financial==1.0.0
+pandas==1.4.3
+pymongo==4.2.0
+requests==2.25.1
+tqdm==4.64.0
+pymongo[srv]
+pysocks
+waitress
+aioflask
+flask[async]
