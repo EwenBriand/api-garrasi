@@ -45,7 +45,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 #     else:
 #         return 'Bad request', 400
 
-
+# add site <- url
 @app.route('/add_site', methods=['POST'])
 def add_site():
     data = None
@@ -66,6 +66,32 @@ def add_site():
         return 'Bad request', 400
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return "Note pour vous meme sam est report", 200
+
+
+# add user <- username color
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    data = None
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        data = request.get_json()
+
+    if data is not None:
+        if user.find_one({"username": data["username"]}) == None:
+            new_s = {"username": data["username"], "color": data["color"]}
+            res = site.update_one({"url": new_s["url"]}, {
+                "$set": new_s}, upsert=True)
+            return new_s, 200
+        else:
+            return 'Bad name', 400
+    else:
+        return 'Bad request', 400
+
+
+# add msg <- url, channel, username, color, content
 @app.route('/add_msg', methods=['POST'])
 def add_msg():
     data = None
@@ -94,6 +120,7 @@ def add_msg():
         return 'Bad request', 400
 
 
+# add msg <- msg id, channel, username, color, content
 @app.route('/add_response', methods=['POST'])
 def add_response():
     data = None
@@ -123,6 +150,7 @@ def add_response():
         return 'Bad request', 400
 
 
+# get_ch_message <- url, channel
 @app.route('/get_ch', methods=['POST'])
 def get_ch():
     data = None
@@ -143,6 +171,7 @@ def get_ch():
     return 'Bad request', 400
 
 
+# get response <- id msg
 @app.route('/get_response', methods=['POST'])
 def get_res():
     data = None
@@ -163,6 +192,7 @@ def get_res():
     return 'Bad request', 400
 
 
+#  upvote <- id ms, username
 @app.route('/upvote', methods=['POST'])
 def upvote():
     data = None
@@ -181,6 +211,7 @@ def upvote():
     return 'Bad Request', 400
 
 
+# down vote <- id ms, username
 @app.route('/downvote', methods=['POST'])
 def downvote():
     data = None
@@ -214,7 +245,7 @@ def downvote():
 
 
 if __name__ == '__main__':
-    # serve(app, host='0.0.0.0', port=8080)
-    app.run(debug=True)
+    serve(app, host='0.0.0.0', port=8080)
+    # app.run(debug=True)
 
 #  http://127.0.0.1:5000
